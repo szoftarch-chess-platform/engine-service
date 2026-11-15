@@ -1,0 +1,16 @@
+# Only the Python sources and requirements.txt are needed to build the image.
+**/__pycache__/
+**/*.pyc
+**/*.pyproj
+.venv/
+venv/
+.git/
+.claude/
+.vs/
+.vscode/
+docs/
+*.md
+.env
+Dockerfile
+.dockerignore
+.gitignore

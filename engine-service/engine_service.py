@@ -21,8 +21,11 @@ class HealthCheckHandler(BaseHTTPRequestHandler):
 
 
 def run():
-    port = int(os.getenv("PORT", "80"))
-    server = HTTPServer(("0.0.0.0", port), HealthCheckHandler)
+    port = os.getenv("PORT")
+    if not port:
+        raise SystemExit("The PORT environment variable is required.")
+
+    server = HTTPServer(("0.0.0.0", int(port)), HealthCheckHandler)
     print(f"Health check service listening on port {port}")
     server.serve_forever()
 

@@ -5,28 +5,45 @@ Engine service of the online chess platform. Its responsibilities are decided in
 ## Current status
 - Health check endpoint implemented.
 
+## Configuration
+
+| Environment variable | Required | Description |
+|---|---|---|
+| `PORT` | yes | port that the service listens on |
+
 ## Run
 ```bash
-python engine-service/engine_service.py
+PORT=8000 python engine-service/engine_service.py
+```
+
+In PowerShell:
+```powershell
+$env:PORT = 8000; python engine-service/engine_service.py
 ```
 
 ## Health check
-- **GET** `http://localhost/health`
+- **GET** `http://localhost:8000/health`
 - Response: `healthy`
 
-## Notes
-- Service listens on port `80` by default.
-- You can override it with environment variable `PORT`.
+## Docker
+```bash
+docker build -t engine-service .
+docker run --rm --init -e PORT=8000 -p 8000:8000 engine-service
+```
+
+[ES-ADR-1](docs/adr/container-image.md) describes the image.
 
 ## File structure
 ```
 engine-service/
-├── docs/                         # decisions and open questions
+├── docs/                         # decisions, open questions and next steps
 ├── engine-service/
 │   ├── engine_service.py         # HTTP server with the health check
 │   └── engine-service.pyproj     # Visual Studio project
+├── Dockerfile                    # container image
+├── .dockerignore                 # files left out of the image build
 └── requirements.txt              # Python dependencies
 ```
 
 ## Documentation
-- The decisions and open questions of the engine-service are in [docs/](docs/README.md).
+- The decisions, open questions and next steps of the engine-service are in [docs/](docs/README.md).
