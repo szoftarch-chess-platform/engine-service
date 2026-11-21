@@ -7,6 +7,7 @@
 | ID | Title |
 |---|---|
 | [ES-ADR-1](adr/container-image.md) | Container image on Debian slim |
+| [ES-ADR-2](adr/chess-engine.md) | Stockfish as the chess engine |
 
 ## Integration
 
