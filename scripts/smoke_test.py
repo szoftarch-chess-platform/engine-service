@@ -1,4 +1,5 @@
 import argparse
+import http.client
 import json
 import time
 import urllib.error
@@ -41,7 +42,10 @@ def wait_until_ready(base_url: str, timeout_seconds: int) -> None:
             status, body = get(base_url, "/health")
             if status == 200 and body == "healthy":
                 return
-        except urllib.error.URLError:
+        # Until the server listens, Docker accepts the connection on the published port and then
+        # closes or resets it. urllib raises that error while it reads the response and not as a
+        # URLError, so the loop catches every OSError, which includes URLError.
+        except (OSError, http.client.HTTPException):
             pass
         time.sleep(1)
 
