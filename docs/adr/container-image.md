@@ -11,7 +11,9 @@ The service runs as a container image, which the CI and the compose of the infra
 - The `Dockerfile` starts from `python:3.14-slim` and installs Stockfish and the packages of `requirements.txt`.
 - The image sets `STOCKFISH_PATH=/usr/games/stockfish`.
 - The service runs as the non-root user `nobody`.
-- The image sets no port. The service listens on the port of the required `PORT` environment variable.
+- The image sets no port or address. The service listens on the port of the required `PORT`
+  environment variable and on the address of the required `HOST` environment variable,
+  which compose sets to `0.0.0.0`.
 - The image has no `HEALTHCHECK`. The compose of the infra repo checks `GET /health`.
 
 ## Rationale

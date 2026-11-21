@@ -12,16 +12,18 @@ Engine service of the online chess platform. Its responsibilities are decided in
 | Environment variable | Required | Description |
 |---|---|---|
 | `PORT` | yes | port that the service listens on |
+| `HOST` | yes | address that the service listens on |
 | `STOCKFISH_PATH` | yes | path to the Stockfish executable |
 | `STOCKFISH_DEPTH` | no | search depth, default `10` |
 
 ## Run
 ```bash
-PORT=8000 python -m engine_service.main
+HOST=127.0.0.1 PORT=8000 python -m engine_service.main
 ```
 
 In PowerShell:
 ```powershell
+$env:HOST = "127.0.0.1"
 $env:PORT = 8000
 $env:STOCKFISH_PATH = "C:\path\to\stockfish.exe"
 $env:STOCKFISH_DEPTH = 10
@@ -40,7 +42,7 @@ python -m engine_service.main
 ## Docker
 ```bash
 docker build -t engine-service .
-docker run --rm --init -e PORT=8000 -e STOCKFISH_DEPTH=10 -p 8000:8000 engine-service
+docker run --rm --init -e HOST=0.0.0.0 -e PORT=8000 -e STOCKFISH_DEPTH=10 -p 8000:8000 engine-service
 ```
 
 The container supplies `STOCKFISH_PATH=/usr/games/stockfish`.

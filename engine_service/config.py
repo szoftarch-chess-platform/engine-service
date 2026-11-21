@@ -5,6 +5,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Settings:
     port: int
+    host: str
     stockfish_path: str
     stockfish_depth: int
 
@@ -13,6 +14,10 @@ def get_settings() -> Settings:
     port = os.getenv("PORT")
     if not port:
         raise SystemExit("The PORT environment variable is required.")
+
+    host = os.getenv("HOST")
+    if not host:
+        raise SystemExit("The HOST environment variable is required.")
 
     stockfish_path = os.getenv("STOCKFISH_PATH")
     if not stockfish_path:
@@ -33,6 +38,7 @@ def get_settings() -> Settings:
 
     return Settings(
         port=parsed_port,
+        host=host,
         stockfish_path=stockfish_path,
         stockfish_depth=stockfish_depth,
     )

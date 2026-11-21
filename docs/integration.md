@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 ```
 
-`variant` is optional and defaults to `standard`. Unknown fields are rejected.
+`variant` is optional and defaults to `standard`. Unknown fields are ignored.
 
 ## Move response
 
@@ -76,6 +76,7 @@ Errors use `application/problem+json` and the RFC 9457 Problem Details fields
 | Environment variable | Required | Description |
 |---|---|---|
 | `PORT` | yes | HTTP listening port |
+| `HOST` | yes | HTTP listen address |
 | `STOCKFISH_PATH` | yes | executable path |
 | `STOCKFISH_DEPTH` | no | Stockfish search depth, default `10` |
 

@@ -46,11 +46,10 @@ async def validation_exception_handler(
     request: Request,
     error: RequestValidationError,
 ) -> JSONResponse:
-    errors = error.errors()
     if any(
         "variant" in [str(part) for part in item.get("loc", ())]
         and item.get("type") == "literal_error"
-        for item in errors
+        for item in error.errors()
     ):
         return problem_response(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
