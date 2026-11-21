@@ -1,7 +1,12 @@
-FROM python:3.14-alpine
+FROM python:3.14-slim
 
 # Without buffering, the output of print reaches the container log at once.
 ENV PYTHONUNBUFFERED=1
+ENV STOCKFISH_PATH=/usr/games/stockfish
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends stockfish \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -9,8 +14,8 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY engine-service/ engine-service/
+COPY engine_service/ engine_service/
 
 USER nobody
 
-CMD ["python", "engine-service/engine_service.py"]
+CMD ["python", "-m", "engine_service.main"]

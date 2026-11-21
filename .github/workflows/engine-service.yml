@@ -1,0 +1,51 @@
+name: Engine service
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install Stockfish
+        run: sudo apt-get update && sudo apt-get install -y stockfish
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+
+      - name: Run unit and real-engine tests
+        env:
+          STOCKFISH_PATH: /usr/games/stockfish
+        run: python -m pytest tests -q
+
+      - name: Build Docker image
+        run: docker build -t engine-service:test .
+
+      - name: Start container
+        run: |
+          docker run --detach --init \
+            --name engine-service-test \
+            --publish 8000:8000 \
+            --env PORT=8000 \
+            --env STOCKFISH_DEPTH=10 \
+            engine-service:test
+
+      - name: Smoke test container
+        run: python scripts/smoke_test.py --base-url http://127.0.0.1:8000 --timeout 60
+
+      - name: Stop container
+        if: always()
+        run: docker rm --force engine-service-test
