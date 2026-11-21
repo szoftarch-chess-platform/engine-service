@@ -59,7 +59,7 @@ def main() -> None:
     status, body = post(
         args.base_url,
         "/moves",
-        {"fen": STARTING_POSITION},
+        {"fen": STARTING_POSITION, "variant": "standard"},
     )
     if status != 200:
         raise RuntimeError(f"Move request failed with HTTP {status}: {body}")

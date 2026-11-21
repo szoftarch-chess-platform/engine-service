@@ -46,6 +46,18 @@ async def validation_exception_handler(
     request: Request,
     error: RequestValidationError,
 ) -> JSONResponse:
+    errors = error.errors()
+    if any(
+        "variant" in [str(part) for part in item.get("loc", ())]
+        and item.get("type") == "literal_error"
+        for item in errors
+    ):
+        return problem_response(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            "Unsupported variant",
+            "The requested game variant is unsupported.",
+        )
+
     return problem_response(
         status.HTTP_400_BAD_REQUEST,
         "Invalid position",
@@ -71,7 +83,7 @@ def get_move(request: MoveRequest) -> MoveResponse:
 
     if board.is_game_over():
         return problem_response(
-            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
             "Invalid position",
             "The side to move has no legal move.",
         )

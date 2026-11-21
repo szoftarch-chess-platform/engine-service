@@ -34,7 +34,7 @@ python -m engine_service.main
 
 ## Move recommendation
 - **POST** `http://localhost:8000/moves`
-- Request: `{"fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}`
+- Request: `{"fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1","variant":"standard"}`
 - Response: `{"move":"e2e4"}`
 
 ## Docker

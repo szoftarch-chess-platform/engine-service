@@ -48,11 +48,30 @@ def test_fen_must_have_six_fields() -> None:
 def test_unknown_field_is_rejected() -> None:
     response = client.post(
         "/moves",
-        json={"fen": STARTING_POSITION, "variant": "standard"},
+        json={"fen": STARTING_POSITION, "depth": 10},
     )
 
     assert response.status_code == 400
     assert response.headers["content-type"].startswith("application/problem+json")
+
+
+def test_variant_defaults_to_standard() -> None:
+    app.state.engine = FakeEngine()
+
+    response = client.post("/moves", json={"fen": STARTING_POSITION})
+
+    assert response.status_code == 200
+
+
+def test_unsupported_variant_is_rejected() -> None:
+    response = client.post(
+        "/moves",
+        json={"fen": STARTING_POSITION, "variant": "chess960"},
+    )
+
+    assert response.status_code == 422
+    assert response.headers["content-type"].startswith("application/problem+json")
+    assert response.json()["title"] == "Unsupported variant"
 
 
 def test_terminal_position_is_rejected() -> None:
@@ -63,7 +82,7 @@ def test_terminal_position_is_rejected() -> None:
         json={"fen": "7k/6Q1/6K1/8/8/8/8/8 b - - 0 1"},
     )
 
-    assert response.status_code == 400
+    assert response.status_code == 422
     assert response.json()["title"] == "Invalid position"
 
 

@@ -26,11 +26,12 @@ Content-Type: application/json
 
 ```json
 {
-  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  "variant": "standard"
 }
 ```
 
-The request accepts only `fen`. The game variant is standard in the first contract.
+`variant` is optional and defaults to `standard`. Unknown fields are rejected.
 
 ## Move response
 
@@ -63,7 +64,8 @@ healthy
 
 | Status | Meaning |
 |---|---|
-| `400 Bad Request` | The request is malformed, the FEN is invalid, or the side to move has no legal move |
+| `400 Bad Request` | The request or FEN is malformed or invalid |
+| `422 Unprocessable Content` | The variant is unsupported or the position has no legal move |
 | `500 Internal Server Error` | Stockfish fails or is unavailable |
 
 Errors use `application/problem+json` and the RFC 9457 Problem Details fields
@@ -84,11 +86,11 @@ The container sets `STOCKFISH_PATH=/usr/games/stockfish`.
 The game service should apply the following rules:
 
 1. Generate FEN from the authoritative game state.
-2. Send `POST /moves` with only `fen`.
+2. Send `POST /moves` with `fen` and, optionally, `variant: "standard"`.
 3. Apply a request timeout.
 4. Repeat a failed request once.
-5. Treat a 400 response as an invalid local game state.
-6. Treat 400 as an invalid position or terminal state.
+5. Treat a 400 response as an invalid local request or game state.
+6. Treat 422 as an unsupported variant or terminal position.
 7. Treat 500 as an unavailable engine and use the service's normal game error handling.
 8. Validate the returned UCI move against the position before applying it.
 
