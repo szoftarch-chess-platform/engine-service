@@ -16,8 +16,12 @@
 
 ## Open questions
 
-None yet.
+- The open questions of [ES-ADR-2](adr/chess-engine.md) on how Stockfish gets into the image, on python-chess, and on the strength, the thinking time and the number of processes of the bot.
+- The web framework, for example FastAPI, or the standard library as in the walking skeleton.
 
 ## Next steps
-- Integrate the game-service HTTP caller and retry policy.
-- Add system-level Compose smoke coverage after the game-service is available.
+- Answer the open questions above.
+- Complete system-level integration after the game-service HTTP caller is available.
+- Add tests with the example of the contract, with a position without a legal move and with invalid FENs.
+- Name the version of Stockfish and the link to its source in the README, and describe the new configuration there.
+- Add the CI workflow of ADR-2.

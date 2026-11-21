@@ -40,7 +40,6 @@ jobs:
             --name engine-service-test \
             --publish 8000:8000 \
             --env PORT=8000 \
-            --env HOST=0.0.0.0 \
             --env STOCKFISH_DEPTH=10 \
             engine-service:test
 
