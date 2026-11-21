@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 ```
 
-`variant` is optional and defaults to `standard`. Unknown fields are rejected.
+`variant` is optional and defaults to `standard`. Unknown fields are ignored.
 
 ## Move response
 
@@ -76,6 +76,7 @@ Errors use `application/problem+json` and the RFC 9457 Problem Details fields
 | Environment variable | Required | Description |
 |---|---|---|
 | `PORT` | yes | HTTP listening port |
+| `HOST` | yes | HTTP listening address, `127.0.0.1` on the host and `0.0.0.0` in a container |
 | `STOCKFISH_PATH` | yes | executable path |
 | `STOCKFISH_DEPTH` | no | Stockfish search depth, default `10` |
 
@@ -88,7 +89,7 @@ The game service should apply the following rules:
 1. Generate FEN from the authoritative game state.
 2. Send `POST /moves` with `fen` and, optionally, `variant: "standard"`.
 3. Apply a request timeout.
-4. Repeat a failed request once.
+4. Repeat a request once when it fails with 500 or gets no answer in time.
 5. Treat a 400 response as an invalid local request or game state.
 6. Treat 422 as an unsupported variant or terminal position.
 7. Treat 500 as an unavailable engine and use the service's normal game error handling.

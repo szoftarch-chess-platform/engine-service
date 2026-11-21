@@ -1,6 +1,6 @@
 # Engine service architecture
 
-The diagram shows only the decisions made in ADR-1 and ADR-6.
+The diagram shows only the decisions made in ADR-1, ADR-6 and ES-ADR-2.
 
 ```plantuml
 @startuml

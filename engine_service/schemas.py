@@ -1,11 +1,10 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
+# Unknown fields are ignored, because a reader tolerates what it does not know (ADR-7).
 class MoveRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     fen: str
     variant: Literal["standard"] = "standard"
 
