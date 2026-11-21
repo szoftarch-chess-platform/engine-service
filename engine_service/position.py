@@ -6,6 +6,9 @@ class InvalidPositionError(ValueError):
 
 
 def parse_position(fen: str) -> chess.Board:
+    if len(fen.split()) != 6:
+        raise InvalidPositionError("The FEN must contain exactly 6 fields.")
+
     try:
         board = chess.Board(fen)
     except ValueError as error:

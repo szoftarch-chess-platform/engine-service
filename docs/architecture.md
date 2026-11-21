@@ -11,7 +11,7 @@ component "Engine Service" as Engine
 component "Stockfish" as Stockfish
 
 Player --> Game : move
-Game --> Engine : POST /move with FEN
+Game --> Engine : POST /moves with FEN
 Engine --> Stockfish : UCI analysis
 Stockfish --> Engine : best move
 Engine --> Game : UCI move
