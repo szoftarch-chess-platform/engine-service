@@ -73,6 +73,7 @@ healthy
 | Environment variable | Required | Description |
 |---|---|---|
 | `PORT` | yes | HTTP listening port |
+| `HOST` | yes | HTTP listening address, `127.0.0.1` on the host and `0.0.0.0` in a container |
 | `STOCKFISH_PATH` | yes | executable path |
 | `STOCKFISH_DEPTH` | no | Stockfish search depth, default `10` |
 
