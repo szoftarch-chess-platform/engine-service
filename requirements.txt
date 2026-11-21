@@ -1,1 +1,5 @@
-# no external dependencies yet
+fastapi>=0.128,<1
+uvicorn[standard]>=0.38,<1
+python-chess>=1.999,<2
+pytest>=9.0,<10
+httpx>=0.28,<1
