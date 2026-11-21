@@ -45,14 +45,16 @@ def test_fen_must_have_six_fields() -> None:
     assert response.json()["detail"] == "The FEN must contain exactly 6 fields."
 
 
-def test_unknown_field_is_rejected() -> None:
+def test_unknown_field_is_ignored() -> None:
+    app.state.engine = FakeEngine()
+
     response = client.post(
         "/moves",
         json={"fen": STARTING_POSITION, "depth": 10},
     )
 
-    assert response.status_code == 400
-    assert response.headers["content-type"].startswith("application/problem+json")
+    assert response.status_code == 200
+    assert response.json() == {"move": "e2e4"}
 
 
 def test_variant_defaults_to_standard() -> None:

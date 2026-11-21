@@ -12,21 +12,25 @@ Engine service of the online chess platform. Its responsibilities are decided in
 | Environment variable | Required | Description |
 |---|---|---|
 | `PORT` | yes | port that the service listens on |
+| `HOST` | yes | address that the service listens on, `127.0.0.1` on the host and `0.0.0.0` in a container |
 | `STOCKFISH_PATH` | yes | path to the Stockfish executable |
 | `STOCKFISH_DEPTH` | no | search depth, default `10` |
 
 ## Run
 ```bash
-PORT=8000 python -m engine_service.main
+PORT=8000 HOST=127.0.0.1 STOCKFISH_PATH=/path/to/stockfish python -m engine_service.main
 ```
 
 In PowerShell:
 ```powershell
 $env:PORT = 8000
+$env:HOST = '127.0.0.1'
 $env:STOCKFISH_PATH = "C:\path\to\stockfish.exe"
 $env:STOCKFISH_DEPTH = 10
 python -m engine_service.main
 ```
+
+The development compose of the infra repo publishes its engine-service on the same port. If it runs, stop that container first in the infra folder with `docker compose stop engine-service`.
 
 ## Health check
 - **GET** `http://localhost:8000/health`
@@ -40,10 +44,10 @@ python -m engine_service.main
 ## Docker
 ```bash
 docker build -t engine-service .
-docker run --rm --init -e PORT=8000 -e STOCKFISH_DEPTH=10 -p 8000:8000 engine-service
+docker run --rm --init -e PORT=8000 -e HOST=0.0.0.0 -e STOCKFISH_DEPTH=10 -p 127.0.0.1:8000:8000 engine-service
 ```
 
-The container supplies `STOCKFISH_PATH=/usr/games/stockfish`.
+The container supplies `STOCKFISH_PATH=/usr/games/stockfish`. The image contains Stockfish from the package of Debian, which is under GPL-3.0. Its source is at https://tracker.debian.org/pkg/stockfish.
 
 ## Tests
 ```bash
@@ -86,10 +90,15 @@ engine-service/
 ├── .github/
 │   └── workflows/
 │       └── engine-service.yml    # tests and container validation
+├── LICENSE                       # GNU General Public License version 3
 ├── Dockerfile                    # container image
 ├── .dockerignore                 # files left out of the image build
 └── requirements.txt              # Python dependencies
 ```
+
+## License
+
+The engine-service is free software under the GNU General Public License version 3 or any later version. The full text is in [LICENSE](LICENSE), and [ES-ADR-2](docs/adr/chess-engine.md) describes the license.
 
 ## Documentation
 - The decisions, open questions and next steps of the engine-service are in [docs/](docs/README.md).
