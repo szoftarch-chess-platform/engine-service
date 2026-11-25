@@ -67,6 +67,17 @@ The shared OpenAPI contract is maintained in the `infra` repository by ADR-6.
 
 [ES-ADR-1](docs/adr/container-image.md) describes the image.
 
+## CI
+
+The workflow in `.github/workflows/engine-service.yml` runs the tests, builds the Docker image and smoke tests it on every pull request and every push to `dev` and `main`. A tag such as `v1.0.0` also publishes the image for amd64 and arm64 as `ghcr.io/szoftarch-chess-platform/engine-service:1.0.0`, as ADR-2 decides.
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+After its first publication the package can be private. Make it public once in the package settings on GitHub.
+
 ## File structure
 ```
 engine-service/

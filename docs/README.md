@@ -20,5 +20,4 @@
 - The open question of [ES-ADR-2](adr/chess-engine.md) on how many Stockfish processes serve parallel games against the bot.
 
 ## Next steps
-- Publish the image to the GitHub Container Registry for a version tag, as ADR-2 decides.
 - Complete the system-level integration after the game-service calls the engine.
