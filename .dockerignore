@@ -5,6 +5,9 @@
 .venv/
 venv/
 .git/
+.github/
+tests/
+scripts/
 .claude/
 .vs/
 .vscode/
